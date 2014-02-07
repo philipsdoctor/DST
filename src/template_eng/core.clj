@@ -10,8 +10,6 @@
 
 (def parser (insta/parser grammar))
 
-(def x "Hello ${name}")
-
 ; from clojure contrib....
 (defn safe-get 
     "Like get, but throws an exception if the key is not found."
@@ -78,9 +76,4 @@
 
 
 ;(println (str (map rewrite (parser x))))
-
-(defn sample-output [{name :name :as example}]
-  (let [template ["Hello " name]]
-  (clojure.string/join template)))
-
 
