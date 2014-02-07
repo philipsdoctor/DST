@@ -1,6 +1,6 @@
-(ns template-eng.core-test
+(ns dst.core-test
   (:require [clojure.test :refer :all]
-            [template-eng.core :refer :all]))
+            [dst.core :refer :all]))
 
 (deftest a-test
   (testing "FIXME, I fail."

@@ -1,6 +1,5 @@
-(ns template-eng.core
-  (:require [instaparse.core :as insta])
-  (:import [java.util.regex Pattern]))
+(ns dst.core
+  (:require [instaparse.core :as insta]))
 
 (def grammar "<full-template> = ( textblob | template-object ) + 
               <template-object> = <'${'> inner-template-var <'}'>
