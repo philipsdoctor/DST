@@ -9,13 +9,6 @@
 
 (def parser (insta/parser grammar))
 
-; from clojure contrib....
-(defn safe-get 
-    "Like get, but throws an exception if the key is not found."
-    [map key] 
-    (lazy-get map key 
-      (throw  (IllegalArgumentException.  (format "Key %s not found in %s" key map)))))
-
 (defn rewrite  
   [[data-type data-val]]  
   (cond  
