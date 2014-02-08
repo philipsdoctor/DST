@@ -19,9 +19,9 @@
 (defmacro generate-template 
   [template]
   (let [parsed-template (parser template)
-        tt (map rewrite parsed-template)
-        ta (filter keyword? tt)
-        rep-map (into {} (for [kw ta] [kw (gensym)]))
+        to-string-vector (map rewrite parsed-template)
+        vec-keywords (filter keyword? to-string-vector)
+        rep-map (into {} (for [kw vec-keywords] [kw (gensym)]))
         bindings (vec (vals rep-map))
         as-map-name (gensym)
         destruct-bindings [(assoc (clojure.set/map-invert rep-map) :as as-map-name)]]
@@ -30,5 +30,5 @@
                provided-things# ~((comp set keys) rep-map)]
          (when (not= as-map-things# provided-things#)
            (throw (Exception. (str "Missing required keys for template " as-map-things# " " provided-things#)))))
-         (str ~@(clojure.walk/postwalk-replace rep-map tt)))))
+         (str ~@(clojure.walk/postwalk-replace rep-map to-string-vector)))))
 
