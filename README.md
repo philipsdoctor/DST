@@ -2,8 +2,6 @@
 
 A Dead Simple Template language... it will either add or subtract an hour from your dev time!
 
-Generates the template in a macro.
-
 ## Usage
 
 Leiningen 
@@ -19,6 +17,16 @@ Sample Code
       []  
       (let [my-template (generate-template "Hello ${name}")]
         (prn (my-template {:name "Phil"}))))
+
+Syntax
+
+The generate-template function expects a string template.  The template contains text with interspersed symbol names.  A symbol is understood as text in the template surrounded by ${}.  generate-template will return a function that expects a dict with a keyword for every symbol passed in the template.
+
+A simple example (generate-template "Hello ${name}") will return a function similar to the following but with validation:
+
+    (fn [{name :name}] (str "Hello " name))
+
+The ' character can be used as an escape, example (generate-template "Hello '${name}") will generate a function that takes an empty map and returns "Hello ${name}". 
 
 ## License
 
