@@ -26,7 +26,10 @@
       (is (= (my-template {:name "Phil"}) "Hello Phil"))))
   (testing "generates a template with no values"
     (let [my-template (generate-template "Hello!")]
-      (is (= (my-template {}) "Hello!")))))
+      (is (= (my-template {}) "Hello!"))))
+  (testing "generates a template with an escaped symbol"
+    (let [my-template (generate-template "Hello $${name} ${name2}")]
+      (is (= (my-template {:name2 "Phil"}) "Hello ${name} Phil")))))
 
 (deftest validates-inputs
   (testing "If the template specifies a key that is missing from the map then an error is thrown"

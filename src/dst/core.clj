@@ -12,7 +12,7 @@
 (def parser (insta/parser grammar))
 
 (defn rewrite [tree] 
-  (insta/transform {:escaped-blob (fn [_ txt _] txt)
+  (insta/transform {:escaped-blob (fn [strt txt end] (str strt txt end))
                     :textblob (fn [data-val] data-val)
                     :inner-template-var (fn [data-val] (keyword data-val))} tree))
 
