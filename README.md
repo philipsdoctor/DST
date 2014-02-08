@@ -6,8 +6,19 @@ Generates the template in a macro.
 
 ## Usage
 
-    (def my-template (generate-template "Hello ${name}"))
-    (my-template {:name "Phil"})
+Leiningen 
+
+    [org.clojars.pdoctor/dst "0.1.0-SNAPSHOT"]
+
+Sample Code
+
+    (ns example.core
+      (:require [dst.core :refer [generate-template]]))
+
+    (defn foo 
+      []  
+      (let [my-template (generate-template "Hello ${name}")]
+        (prn (my-template {:name "Phil"}))))
 
 ## License
 
