@@ -26,7 +26,11 @@ A simple example (generate-template "Hello ${name}") will return a function simi
 
     (fn [{name :name}] (str "Hello " name))
 
-The ' character can be used as an escape, example (generate-template "Hello '${name}") will generate a function that takes an empty map and returns "Hello ${name}". 
+An extra $ character can be used as an escape, example 
+
+    (generate-template "Hello $${name}") 
+
+will generate a function that takes an empty map and returns "Hello ${name}". 
 
 ## License
 

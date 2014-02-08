@@ -2,11 +2,12 @@
   (:require [instaparse.core :as insta]
             [clojure.set]))
 
-(def grammar "<full-template> = ( textblob | escaped-template-object | template-object ) + 
-              <escaped-template-object> = <'\\'${'> textblob <'}'>
+(def grammar "<full-template> = ( escaped-template-object | textblob | template-object ) + 
+              <escaped-template-object> = <'$'> '${' escaped-blob '}'
               <template-object> = <'${'> inner-template-var <'}'>
               inner-template-var = #'[^}]*'
-              textblob = !'${' #'[^$]*' 
+              textblob = !'${' #'[^$]*'
+              escaped-blob = !'${' #'[^$}]*' 
               fallback = #'.*'")
 
 (def parser (insta/parser grammar))

@@ -1,6 +1,7 @@
 (ns dst.core-test
   (:require [clojure.test :refer :all]
-            [dst.core :refer [generate-template parser]]))
+            [dst.core :refer [generate-template parser]]
+            [instaparse.core :as insta]))
 
 (deftest parser-grammar-works
   (testing "only text blob"
@@ -14,11 +15,11 @@
   (testing "nested var is a strange degenerate case"
     (is (= '([:inner-template-var "${test"] [:textblob "}"]) (parser "${${test}}"))))
   (testing "escape char"
-    (is (= '([:textblob "${test}"]) (parser "'${test}"))))
+    ;TODO
+    ;(is (= '([:textblob "${test}"]) (parser "$${test}")))
+    )
   (testing "malformed inputs"
-    ; TODO
-    ;(is (= '([:textblob "Test text! ${"]) (parser "Test text! ${")))
-    ))
+    (is (insta/failure? (parser "Test text! ${"))) ))
 
 (deftest generates-template
   (testing "generates a simple template with one map value"
