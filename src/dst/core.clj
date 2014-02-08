@@ -1,5 +1,6 @@
 (ns dst.core
-  (:require [instaparse.core :as insta]))
+  (:require [instaparse.core :as insta]
+            [clojure.set]))
 
 (def grammar "<full-template> = ( textblob | template-object ) + 
               <template-object> = <'${'> inner-template-var <'}'>
@@ -28,7 +29,7 @@
          (let [as-map-things# ((comp set keys) ~as-map-name)
                provided-things# ~((comp set keys) rep-map)]
          (when (not= as-map-things# provided-things#)
-           (throw (Exception. (str "Yolo! " as-map-things# " " provided-things#)))))
+           (throw (Exception. (str "Missing required keys for template " as-map-things# " " provided-things#)))))
          (str ~@(clojure.walk/postwalk-replace rep-map tt)))))
 
  

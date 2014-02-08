@@ -1,7 +1,8 @@
 (ns dst.core-test
   (:require [clojure.test :refer :all]
-            [dst.core :refer :all]))
+            [dst.core :refer [generate-template]]))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+(deftest generates-template
+  (testing "generates a simple template with one map value"
+    (let [my-template (generate-template "Hello ${name}")]
+      (is (= (my-template {:name "Phil"}) "Hello Phil")))))
