@@ -14,9 +14,7 @@
   (testing "nested var is a strange degenerate case"
     (is (= '([:inner-template-var "${test"] [:textblob "}"]) (parser "${${test}}"))))
   (testing "escape char"
-    ; TODO
-    ;(is (= '([:textblob "${test}"]) (parser "'${test}")))
-    )
+    (is (= '([:textblob "${test}"]) (parser "'${test}"))))
   (testing "malformed inputs"
     ; TODO
     ;(is (= '([:textblob "Test text! ${"]) (parser "Test text! ${")))
