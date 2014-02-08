@@ -15,13 +15,21 @@
   (testing "nested var is a strange degenerate case"
     (is (= '([:inner-template-var "${test"] [:textblob "}"]) (parser "${${test}}"))))
   (testing "escape char"
-    ;TODO
-    ;(is (= '([:textblob "${test}"]) (parser "$${test}")))
-    )
+    ; this transformation will be improved in a later step
+    (is (= '([:escaped-blob "${" "test" "}"]) (parser "$${test}"))))
   (testing "malformed inputs"
     (is (insta/failure? (parser "Test text! ${"))) ))
 
 (deftest generates-template
   (testing "generates a simple template with one map value"
     (let [my-template (generate-template "Hello ${name}")]
-      (is (= (my-template {:name "Phil"}) "Hello Phil")))))
+      (is (= (my-template {:name "Phil"}) "Hello Phil"))))
+  (testing "generates a template with no values"
+    (let [my-template (generate-template "Hello!")]
+      (is (= (my-template {}) "Hello!")))))
+
+(deftest validates-inputs
+  (testing "If the template specifies a key that is missing from the map then an error is thrown"
+    (let [my-template (generate-template "Hello ${name}")]
+      (is (thrown? IllegalArgumentException (my-template {}))))))
+
