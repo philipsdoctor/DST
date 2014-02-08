@@ -6,7 +6,7 @@ A Dead Simple Template language... it will either add or subtract an hour from y
 
 Leiningen 
 
-    [org.clojars.pdoctor/dst "0.1.0-SNAPSHOT"]
+    [dst "0.1.0-SNAPSHOT"]
 
 Sample Code
 
