@@ -18,8 +18,8 @@
     ; this transformation will be improved in a later step
     (is (= '([:escaped-blob "${" "test" "}"]) (parser "$${test}"))))
   (testing "malformed inputs"
-    (is (= '([:textblob "Test text! "] [:trailing "${"]) (parser "Test text! ${")))
-    (is (= '([:textblob "Test text! "] [:trailing "$"]) (parser "Test text! $")))
+    (is (= '([:textblob "Test text! "] [:fallback "${"]) (parser "Test text! ${")))
+    (is (= '([:textblob "Test text! "] [:fallback "$"]) (parser "Test text! $")))
     ; (is (thrown? IllegalArgumentException (parser "Test text! ${}"))) ; validated in template macro
     ))
 
