@@ -2,19 +2,23 @@
   (:require [instaparse.core :as insta]
             [clojure.set]))
 
-(def grammar "<full-template> = ( escaped-blob | textblob | template-object ) + 
+(def grammar "<full-template> = ( escaped-blob | textblob | template-object ) + trailing?
               escaped-blob = <'$'> '${' !'${' #'[^$}]*' '}'
               <template-object> = <'${'> inner-template-var <'}'>
               inner-template-var = #'[^}]*'
               textblob = !'${' #'[^$]*'
-              fallback = #'.*'")
+              trailing = #'[$|{]*'")
 
 (def parser (insta/parser grammar))
 
 (defn rewrite [tree] 
   (insta/transform {:escaped-blob (fn [strt txt end] (str strt txt end))
                     :textblob (fn [data-val] data-val)
-                    :inner-template-var (fn [data-val] (keyword data-val))} tree))
+                    :trailing (fn [data-val] data-val)
+                    :inner-template-var (fn [data-val] 
+                                          (when (empty? data-val)
+                                            (throw (IllegalArgumentException. (str "Variable names may not be missing."))))
+                                          (keyword data-val))} tree))
 
 (defmacro generate-template 
   [template]

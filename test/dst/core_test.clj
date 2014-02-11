@@ -18,7 +18,10 @@
     ; this transformation will be improved in a later step
     (is (= '([:escaped-blob "${" "test" "}"]) (parser "$${test}"))))
   (testing "malformed inputs"
-    (is (insta/failure? (parser "Test text! ${"))) ))
+    (is (= '([:textblob "Test text! "] [:trailing "${"]) (parser "Test text! ${")))
+    (is (= '([:textblob "Test text! "] [:trailing "$"]) (parser "Test text! $")))
+    ; (is (thrown? IllegalArgumentException (parser "Test text! ${}"))) ; validated in template macro
+    ))
 
 (deftest generates-template
   (testing "generates a simple template with one map value"
@@ -29,7 +32,11 @@
       (is (= (my-template {}) "Hello!"))))
   (testing "generates a template with an escaped symbol"
     (let [my-template (generate-template "Hello $${name} ${name2}")]
-      (is (= (my-template {:name2 "Phil"}) "Hello ${name} Phil")))))
+      (is (= (my-template {:name2 "Phil"}) "Hello ${name} Phil"))))
+  ; throws at compile, TODO figure out how to test that
+  ;(testing "Validates missing symbols"
+  ;  (is (thrown? IllegalArgumentException (generate-template "Hello ${}"))))
+  )
 
 (deftest validates-inputs
   (testing "If the template specifies a key that is missing from the map then an error is thrown"
