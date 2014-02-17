@@ -6,7 +6,7 @@ A Dead Simple Template language... it will either add or subtract an hour from y
 
 Leiningen 
 
-    [dst "0.1.0-SNAPSHOT"]
+<img src="https://clojars.org/dst/latest-version.svg">
 
 Sample Code
 

@@ -1,4 +1,4 @@
-(defproject dst "0.1.0"
+(defproject dst "0.1.1"
   :description "Dead Simple Template language"
   :url "https://github.com/philipsdoctor/DST"
   :license {:name "MIT"
