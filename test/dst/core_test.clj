@@ -1,6 +1,6 @@
 (ns dst.core-test
   (:require [clojure.test :refer :all]
-            [dst.core :refer [generate-template parser]]
+            [dst.core :refer [generate-template parser log-error]]
             [instaparse.core :as insta]))
 
 (deftest parser-grammar-works
@@ -25,13 +25,13 @@
 
 (deftest generates-template
   (testing "generates a simple template with one map value"
-    (let [my-template (generate-template "Hello ${name}")]
+    (let [my-template (generate-template {:template "Hello ${name}"})]
       (is (= (my-template {:name "Phil"}) "Hello Phil"))))
   (testing "generates a template with no values"
-    (let [my-template (generate-template "Hello!")]
+    (let [my-template (generate-template {:template "Hello!"})]
       (is (= (my-template {}) "Hello!"))))
   (testing "generates a template with an escaped symbol"
-    (let [my-template (generate-template "Hello $${name} ${name2}")]
+    (let [my-template (generate-template {:template "Hello $${name} ${name2}"})]
       (is (= (my-template {:name2 "Phil"}) "Hello ${name} Phil"))))
   ; throws at compile, TODO figure out how to test that
   ;(testing "Validates missing symbols"
@@ -40,6 +40,13 @@
 
 (deftest validates-inputs
   (testing "If the template specifies a key that is missing from the map then an error is thrown"
-    (let [my-template (generate-template "Hello ${name}")]
+    (let [my-template (generate-template {:template "Hello ${name}"})]
       (is (thrown? IllegalArgumentException (my-template {}))))))
 
+(deftest custom-error-handling
+  (testing "Can specify a custom handler"
+    (let [my-template (generate-template {:template "Hello ${name}" :error-handler log-error})]
+      (is (= (with-out-str (my-template {})) "\"Missing required keys for template #{} #{:name}\"\n"))))
+  (testing "Defaults to throw"
+    (let [my-template (generate-template {:template "Hello ${name}"})]
+      (is (thrown? IllegalArgumentException (my-template {}))))))
